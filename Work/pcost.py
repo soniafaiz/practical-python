@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 1.27
+# Exercise 1.31
 
 def portfolioCost(filename):
     totalCost = 0.0
@@ -8,7 +8,10 @@ def portfolioCost(filename):
         next(file)
         for line in file:
             row = line.split(',')
-            totalCost += float(row[1]) * float(row[2])
+            try:
+                totalCost += float(row[1]) * float(row[2])
+            except ValueError:
+                print(f'Could not parse {line}')
     return totalCost
 
 cost = portfolioCost('Data/portfolio.csv')
