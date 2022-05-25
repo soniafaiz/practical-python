@@ -19,5 +19,6 @@ while principal > 0:
         principal -= extra_payment
         total_paid += extra_payment
     paymentCount += 1
+    print('{:3d} {:9.2f} {:9.2f}'.format(paymentCount, total_paid, principal))
 
 print('Total paid is {:,.2f} over {} months.'.format(total_paid, paymentCount))
