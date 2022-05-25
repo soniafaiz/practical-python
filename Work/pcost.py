@@ -1,7 +1,8 @@
 # pcost.py
 #
-# Exercise 1.32
+# Exercise 1.33
 import csv
+import sys
 
 def portfolioCost(filename):
     totalCost = 0.0
@@ -15,5 +16,10 @@ def portfolioCost(filename):
                 print('Could not parse', row)
     return totalCost
 
-cost = portfolioCost('Data/portfolio.csv')
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = 'Data/portfolio.csv'
+
+cost = portfolioCost(filename)
 print(f'Total cost: {cost:10.2f}')
