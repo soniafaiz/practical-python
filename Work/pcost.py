@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 1.33
+# Exercise 1.33, 2.15
 import csv
 import sys
 
@@ -9,11 +9,11 @@ def portfolioCost(filename):
     with open(filename, 'rt') as file:
         rows = csv.reader(file)
         next(rows)
-        for row in rows:
+        for rowno, row in enumerate(rows, start=1):
             try:
                 totalCost += float(row[1]) * float(row[2])
             except ValueError:
-                print('Could not parse', row)
+                print(f'Row {rowno}: Could not parse: {row}')
     return totalCost
 
 if len(sys.argv) == 2:
