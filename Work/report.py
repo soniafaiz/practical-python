@@ -1,8 +1,7 @@
 # report.py
 #
-# Exercise 2.4, 2.6
+# Exercise 2.4, 2.6, 2.7
 import csv
-from pprint import pprint
  
 def read_portfolio(filename):
     ''' Read the portfolios from the filename and return a list of portfolios'''
