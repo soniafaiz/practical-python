@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.4, 2.6, 2.7
+# Exercise 2.4, 2.6, 2.7, 2.9
 import csv
  
 def read_portfolio(filename):
@@ -26,6 +26,20 @@ def read_prices(filename):
             except (ValueError, IndexError):
                 print(f'Cant parse: {row} in file {filename}.')
     return prices                
+
+def make_report(portfolio, prices):
+    ''' Returns the gain/loss of all the portfolio shares '''
+    price_change = []
+
+    for stock in portfolio:
+        try:
+            change = prices[stock['name']] - stock['price']
+            price_change.append( (stock['name'], stock['shares'], stock['price'], change) )
+
+        except KeyError:
+            print('Key error: can\'t find ', stock)
+
+    return price_change
 
 def gain_loss(portfolio_file, prices_file):
     ''' Returns the gain/loss of all the portfolio shares '''
