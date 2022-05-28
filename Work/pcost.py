@@ -1,6 +1,6 @@
 # pcost.py
 #
-# Exercise 3.15
+# Exercise 4.4
 import csv
 import report
 
@@ -8,7 +8,7 @@ def portfolio_cost(filename):
     ''' Returns the purchase cost of the portfolio '''
 
     portfolio = report.read_portfolio(filename)
-    total_cost = sum([row['shares']*row['price'] for row in portfolio])
+    total_cost = sum([row.shares * row.price for row in portfolio])
     return total_cost
 
 def main(argv):

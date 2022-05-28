@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 # report.py
 #
-# Exercise 3.15
+# Exercise 4.4
 import csv
 import sys
 import fileparse
+import stock
 
 def read_portfolio(filename):
     ''' Read the portfolios from the filename and return a list of portfolios'''
-    with open(filename) as f:
-        parsed = fileparse.parse_csv(f, select=['name','shares','price'], types=[str,int,float])
-    return parsed
+    with open(filename) as lines:
+        parsed = fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
+
+    portfolio = [ stock.Stock(d['name'], d['shares'], d['price']) for d in parsed ]
+
+    return portfolio
 
 def read_prices(filename):
     ''' Read the prices from the filename and return a dictionary of prices '''
@@ -24,12 +28,12 @@ def make_report(portfolio, prices):
     price_change = []
     for stock in portfolio:
         try:
-            new_price = prices[stock['name']]
-            change = new_price - stock['price']
-            price_change.append( (stock['name'], stock['shares'], new_price, change) )
+            new_price = prices[stock.name]
+            change = new_price - stock.price
+            price_change.append( (stock.name, stock.shares, new_price, change) )
 
         except KeyError:
-            print('Key error: can\'t find ', stock)
+            print('Key error: can\'t find ', stock.name)
 
     return price_change
 
@@ -52,8 +56,8 @@ def print_gain_loss(portfolio, prices):
 
     for stock in portfolio:
         try:
-            stock_value = stock['shares'] * prices[stock['name']]
-            stock_gain_loss = stock_value - stock['shares'] * stock['price']
+            stock_value = stock.shares * prices[stock.name]
+            stock_gain_loss = stock_value - stock.shares * stock.price
 
             portfolio_value += stock_value
             total_gain_loss += stock_gain_loss
