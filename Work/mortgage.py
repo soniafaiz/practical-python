@@ -9,9 +9,9 @@ payment_for_month = 0.0
 total_paid = 0.0
 paymentCount = 0
 
-extra_payment_start_month = input('Enter the month to start the extra payment:')
-extra_payment_end_month = input('Enter the month to end the extra payment:')
-extra_payment = input('Enter the extra payment:')
+extra_payment_start_month = int(input('Enter the month to start the extra payment:'))
+extra_payment_end_month = int(input('Enter the month to end the extra payment:'))
+extra_payment = int(input('Enter the extra payment:'))
 
 while principal > 0:
 
