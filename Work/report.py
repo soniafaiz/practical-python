@@ -1,46 +1,27 @@
 # report.py
 #
-# Exercise 2.16
+# Exercise 3.12
 import csv
 import sys
- 
+import fileparse
+
 def read_portfolio(filename):
     ''' Read the portfolios from the filename and return a list of portfolios'''
-    portfolio = []
-
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        header = next(rows)
-        for rowno, row in enumerate(rows, start=1):
-            record = dict(zip(header, row))
-            try:
-                holding = {'name':record['name'], 'shares':int(record['shares']), 'price':float(record['price'])}
-                portfolio.append(holding)
-            except ValueError:
-                print(f'Row {rowno}: Cant parse: {row} in file {filename}.')
-
-    return portfolio
+    return fileparse.parse_csv(filename, select=['name','shares','price'], types=[str,int,float])
 
 def read_prices(filename):
     ''' Read the prices from the filename and return a dictionary of prices '''
-    prices = {}
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        for row in rows:
-            try:
-                prices[row[0]] = float(row[1])
-            except (ValueError, IndexError):
-                print(f'Cant parse: {row} in file {filename}.')
-    return prices                
-
+    return dict(fileparse.parse_csv(filename, has_headers=False, types=[str, float]))
+ 
 def make_report(portfolio, prices):
     ''' Returns a list of all the portfolio share details along with the current price '''
-    price_change = []
 
+    price_change = []
     for stock in portfolio:
         try:
-            change = prices[stock['name']] - stock['price']
-            price_change.append( (stock['name'], stock['shares'], stock['price'], change) )
+            new_price = prices[stock['name']]
+            change = new_price - stock['price']
+            price_change.append( (stock['name'], stock['shares'], new_price, change) )
 
         except KeyError:
             print('Key error: can\'t find ', stock)
@@ -80,15 +61,12 @@ def print_gain_loss(portfolio, prices):
 
 
 def portfolio_report(portfolio_file, prices_file):
-    '''  ...  '''
+    ''' Produces a report using the portfolio and prices files  '''
     portfolio = read_portfolio(portfolio_file)
     prices = read_prices(prices_file)
     
     print_report(portfolio, prices)
     print_gain_loss(portfolio, prices)
 
-# Check for filename argument
-if len(sys.argv) == 3:
-    portfolio_file = sys.argv[1]
-    prices_file = sys.argv[2]
-    portfolio_report(portfolio_file, prices_file)
+
+portfolio_report('Data/portfolio.csv', 'Data/prices.csv')

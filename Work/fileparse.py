@@ -14,8 +14,8 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
     with open(filename) as f:
         rows = csv.reader(f, delimiter=delimiter)
 
-        # Read the file headers
         if has_headers:
+            # Read the file headers and save indices
             headers = next(rows)
             if select:
                 indices = [headers.index(colname) for colname in select]
@@ -28,18 +28,22 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
                 continue
 
             try:
+                if types:
+                    row = [func(val) for func,val in zip(types,row)]
+    
                 if has_headers:
-                    if types:
-                        record = {headers[i]: func(row[i]) for func, i in zip(types,indices)}
-                    else:
-                        record = {headers[i]: row[i] for i in indices}
+#                    if types:
+#                        record = {headers[i]: func(row[i]) for func, i in zip(types,indices)}
+#                    else:
+                    record = {headers[i]: row[i] for i in indices}
                 else:
-                    if types:
-                        record = tuple([func(val) for func,val in zip(types,row)])
-                    else:
-                        record = row
+#                    if types:
+#                        record = tuple([func(val) for func,val in zip(types,row)])
+#                    else:
+                    record = row
 
                 records.append(record)
+
             except ValueError as e:
                 if not silence_errors:
                     print(f'Row {rowno}: Couldn\'t convert {row}')
