@@ -1,6 +1,6 @@
 # tableformat.py
 #
-# Exercise 4.5
+# Exercise 4.10
 
 class TableFormatter:
     def headings(self, headers):
@@ -28,7 +28,7 @@ class TextTableFormatter(TableFormatter):
 
     def row(self, rowdata):
         for d in rowdata:
-            print(f'{d:>10s}', end=' ')
+            print(f'{d:>10}', end=' ')
         print()
 
 class CSVTableFormatter(TableFormatter):
@@ -71,3 +71,11 @@ def create_formatter(fmt='txt'):
     else:
         raise RuntimeError(f'Unknown format {fmt}')
     return formatter
+
+def print_table(portfolio, headers, formatter):
+    '''
+    '''
+    formatter.headings(headers)
+    rowdata = []
+    for stock in portfolio:
+        formatter.row([getattr(stock,colname) for colname in headers])
