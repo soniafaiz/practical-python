@@ -8,11 +8,15 @@ import fileparse
 
 def read_portfolio(filename):
     ''' Read the portfolios from the filename and return a list of portfolios'''
-    return fileparse.parse_csv(filename, select=['name','shares','price'], types=[str,int,float])
+    with open(filename) as f:
+        parsed = fileparse.parse_csv(f, select=['name','shares','price'], types=[str,int,float])
+    return parsed
 
 def read_prices(filename):
     ''' Read the prices from the filename and return a dictionary of prices '''
-    return dict(fileparse.parse_csv(filename, has_headers=False, types=[str, float]))
+    with open(filename) as f:
+        parsed =  dict(fileparse.parse_csv(f, has_headers=False, types=[str, float]))
+    return parsed
  
 def make_report(portfolio, prices):
     ''' Returns a list of all the portfolio share details along with the current price '''
