@@ -58,19 +58,21 @@ class HTMLTableFormatter(TableFormatter):
             print(f'<td>{d}</td>', end='')
         print('</tr>')
 
+class FormatError(Exception):
+    pass
+
 def create_formatter(fmt='txt'):
     '''
     Returns a formatter based on what is asked for
     '''
     if fmt == 'txt':
-        formatter = TextTableFormatter()
+        return TextTableFormatter()
     elif fmt == 'csv':
-        formatter = CSVTableFormatter()
+        return CSVTableFormatter()
     elif fmt == 'html':
-        formatter = HTMLTableFormatter()
+        return HTMLTableFormatter()
     else:
-        raise RuntimeError(f'Unknown format {fmt}')
-    return formatter
+        raise FormatError(f'Unknown format {fmt}')
 
 def print_table(portfolio, headers, formatter):
     '''
