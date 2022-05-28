@@ -6,6 +6,7 @@ import csv
 import sys
 import fileparse
 import stock
+import tableformat
 
 def read_portfolio(filename):
     ''' Read the portfolios from the filename and return a list of portfolios'''
@@ -22,7 +23,7 @@ def read_prices(filename):
         parsed =  dict(fileparse.parse_csv(f, has_headers=False, types=[str, float]))
     return parsed
  
-def make_report(portfolio, prices):
+def make_report_data(portfolio, prices):
     ''' Returns a list of all the portfolio share details along with the current price '''
 
     price_change = []
@@ -37,17 +38,14 @@ def make_report(portfolio, prices):
 
     return price_change
 
-def print_report(portfolio, prices):
+def print_report(report_data, formatter):
     ''' Prints the output from the make_report function '''
-    report = make_report(portfolio, prices)
 
-    header = ('Name', 'Shares', 'Price', 'Change')
-    print('%10s %10s %10s %10s' % header)
-    print('---------- ---------- ---------- ----------')
+    formatter.headings(['Name', 'Shares', 'Price', 'Change'])
 
-    for name, share, price, change in report:
-        price_str = '$' + '%0.2f' % price
-        print(f'{name:>10s} {share:>10d} {price_str:>10s} {change:>10.2f}')
+    for name, shares, price, change in report_data:
+        rowdata = [ name, str(shares), f'{price:0.2f}', f'{change:0.2f}' ]
+        formatter.row(rowdata)
 
 def print_gain_loss(portfolio, prices):
     ''' Outputs the gain/loss of the portfolio '''
@@ -69,19 +67,30 @@ def print_gain_loss(portfolio, prices):
     print(f'The total gain/loss is ${total_gain_loss:,.2f}')
 
 
-def portfolio_report(portfolio_file, prices_file):
+def portfolio_report(portfolio_file, prices_file, fmt='txt'):
     ''' Produces a report using the portfolio and prices files  '''
+
+    # Read data files
     portfolio = read_portfolio(portfolio_file)
     prices = read_prices(prices_file)
     
-    print_report(portfolio, prices)
-    print_gain_loss(portfolio, prices)
+    # Create report data
+    report_data = make_report_data(portfolio, prices)
+
+    # Print report data
+    formatter = tableformat.create_formatter(fmt)
+    print_report(report_data, formatter)
+
+#    print_gain_loss(portfolio, prices)
 
 def main(argv):
-    if len(argv) != 3:
+    if len(argv)== 3:
+        portfolio_report(argv[1], argv[2])
+    elif len(argv) == 4:
+        portfolio_report(argv[1], argv[2], argv[3])
+    else:
         raise SystemExit(f'Usage: {argv[0]} ' 'portfile pricefile')
-    portfolio_report(argv[1], argv[2])
-    #portfolio_report('Data/portfolio.csv', 'Data/prices.csv')
+
 
 if __name__ == '__main__':
     import sys
