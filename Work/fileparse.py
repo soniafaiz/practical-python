@@ -32,14 +32,8 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
                     row = [func(val) for func,val in zip(types,row)]
     
                 if has_headers:
-#                    if types:
-#                        record = {headers[i]: func(row[i]) for func, i in zip(types,indices)}
-#                    else:
                     record = {headers[i]: row[i] for i in indices}
                 else:
-#                    if types:
-#                        record = tuple([func(val) for func,val in zip(types,row)])
-#                    else:
                     record = row
 
                 records.append(record)
