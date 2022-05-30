@@ -1,26 +1,32 @@
 #!/usr/bin/env python3
 # report.py
 #
-# Exercise 4.4
-import csv
-import sys
+# Exercise 6.12
 import fileparse
-import stock
+from stock import Stock
 import tableformat
+from portfolio import Portfolio
 
 def read_portfolio(filename):
-    ''' Read the portfolios from the filename and return a list of portfolios'''
+    ''' 
+    Read the portfolios from the filename and return a 
+    list of portfolios
+    '''
     with open(filename) as lines:
-        parsed = fileparse.parse_csv(lines, select=['name','shares','price'], types=[str,int,float])
+        parsed = fileparse.parse_csv(lines, 
+                                     select=['name','shares','price'], 
+                                     types=[str,int,float])
 
-    portfolio = [ stock.Stock(d['name'], d['shares'], d['price']) for d in parsed ]
+    portfolio = [ Stock(d['name'], d['shares'], d['price']) for d in parsed ]
 
-    return portfolio
+    return Portfolio(portfolio)
 
 def read_prices(filename):
     ''' Read the prices from the filename and return a dictionary of prices '''
     with open(filename) as f:
-        parsed =  dict(fileparse.parse_csv(f, has_headers=False, types=[str, float]))
+        parsed =  dict(fileparse.parse_csv(f, 
+                                           has_headers=False, 
+                                           types=[str, float]))
     return parsed
  
 def make_report_data(portfolio, prices):
