@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # report.py
 #
-# Exercise 6.12
+# Exercise 7.3 
 import fileparse
 from stock import Stock
 import tableformat
@@ -17,7 +17,8 @@ def read_portfolio(filename):
                                      select=['name','shares','price'], 
                                      types=[str,int,float])
 
-    portfolio = [ Stock(d['name'], d['shares'], d['price']) for d in parsed ]
+    portfolio = [ Stock(**d)for d in parsed ]
+    #portfolio = [ Stock(d['name'], d['shares'], d['price']) for d in parsed ]
 
     return Portfolio(portfolio)
 
