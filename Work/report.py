@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # report.py
 #
-# Exercise 7.3 
+# Exercise 7.4 
 import fileparse
 from stock import Stock
 import tableformat
 from portfolio import Portfolio
 
-def read_portfolio(filename):
+def read_portfolio(filename, **opts):
     ''' 
     Read the portfolios from the filename and return a 
     list of portfolios
@@ -15,10 +15,10 @@ def read_portfolio(filename):
     with open(filename) as lines:
         parsed = fileparse.parse_csv(lines, 
                                      select=['name','shares','price'], 
-                                     types=[str,int,float])
+                                     types=[str,int,float],
+                                     **opts)
 
     portfolio = [ Stock(**d)for d in parsed ]
-    #portfolio = [ Stock(d['name'], d['shares'], d['price']) for d in parsed ]
 
     return Portfolio(portfolio)
 
