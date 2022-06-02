@@ -1,31 +1,20 @@
 # ticker.py
 #
 #  Exercise 6.12
-from follow import follow
+from .follow import follow
 import csv
 
 def select_columns(rows, indices):
     return ( [row[index] for index in indices] for row in rows )
-#    for row in rows:
-#        yield [row[index] for index in indices]
 
 def convert_types(rows, types):
     return ( [func(val) for func, val in zip(types, row)] for row in rows )
-#    for row in rows:
-#        yield [func(val) for func, val in zip(types, row)]
 
 def make_dicts(rows, headers):
     return ( dict(zip(headers, row)) for row in rows )
-#    for row in rows:
-#        yield dict(zip(headers, row))
 
 def filter_symbols(rows, names):
     return (row for row in rows if row['name'] in names)
-
-#    for row in rows:
-#        if row['name'] in names:
-#            yield row
-
 
 def parse_stock_data(lines):
     rows = csv.reader(lines)
@@ -48,7 +37,6 @@ def ticker(portfile, logfile, fmt):
     formatter.headings(['Name','Price','Change'])
     for row in rows:
         formatter.row( str(row[key]) for key in row )
-#        formatter.row([str(row[key]) for key in row])
     
 
 if __name__ == '__main__':

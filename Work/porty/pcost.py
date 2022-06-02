@@ -1,7 +1,7 @@
 # pcost.py
 #
 # Exercise 6.12
-import report
+from . import report
 
 def portfolio_cost(filename):
     ''' Returns the purchase cost of the portfolio '''

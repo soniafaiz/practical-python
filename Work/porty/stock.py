@@ -1,7 +1,7 @@
 # stock.py
 #
 # Exercise 5.8, 7.9
-from typedproperty import String, Integer, Float 
+from .typedproperty import String, Integer, Float 
 
 class Stock:
     name = String('name')

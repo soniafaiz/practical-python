@@ -2,10 +2,10 @@
 # report.py
 #
 # Exercise 7.4 
-import fileparse
-from stock import Stock
-import tableformat
-from portfolio import Portfolio
+from . import fileparse
+from .stock import Stock
+from . import tableformat
+from .portfolio import Portfolio
 
 def read_portfolio(filename, **opts):
     ''' 
