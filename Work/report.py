@@ -13,14 +13,7 @@ def read_portfolio(filename, **opts):
     list of portfolios
     '''
     with open(filename) as lines:
-        parsed = fileparse.parse_csv(lines, 
-                                     select=['name','shares','price'], 
-                                     types=[str,int,float],
-                                     **opts)
-
-    portfolio = [ Stock(**d)for d in parsed ]
-
-    return Portfolio(portfolio)
+        return Portfolio.from_csv(lines, **opts)
 
 def read_prices(filename):
     ''' Read the prices from the filename and return a dictionary of prices '''
